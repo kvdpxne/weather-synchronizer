@@ -1,0 +1,47 @@
+plugins {
+  id("java")
+}
+
+description = "Allows you to synchronize real weather with the weather in the game."
+group = "me.kvdpxne"
+version = "0.1.0"
+
+dependencies {
+  compileOnly(libraries.spigot)
+
+  testImplementation(libraries.gson)
+  testImplementation(libraries.jupiter)
+}
+
+def targetJavaVersion = 8
+java {
+  def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+
+  sourceCompatibility = javaVersion
+  targetCompatibility = javaVersion
+
+  if (JavaVersion.current() < javaVersion) {
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+  }
+}
+
+tasks.withType(JavaCompile).configureEach {
+  if (10 <= targetJavaVersion || JavaVersion.current().isJava10Compatible()) {
+    options.release.set(targetJavaVersion)
+  }
+}
+
+tasks.withType(Test).configureEach {
+  useJUnitPlatform()
+}
+
+processResources {
+  def properties = ["version": rootProject.version]
+
+  inputs.properties(properties)
+  filteringCharset("UTF-8")
+
+  filesMatching("plugin.yml") {
+    expand(properties)
+  }
+}

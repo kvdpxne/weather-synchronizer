@@ -1,0 +1,31 @@
+pluginManagement {
+
+  repositories {
+    gradlePluginPortal()
+
+    mavenCentral()
+    mavenLocal()
+  }
+}
+
+dependencyResolutionManagement {
+
+  versionCatalogs {
+    def fileName = "libraries"
+    create(fileName) {
+      from(files("./gradle/${fileName}.versions.toml"))
+    }
+  }
+
+  repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven {
+      name = "spigot-repository"
+      url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+  }
+}
+
+rootProject.name = "weather-synchronizer"

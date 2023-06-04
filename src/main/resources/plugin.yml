@@ -1,0 +1,8 @@
+name: "WeatherSynchronizer"
+version: "${version}"
+main: "me.kvdpxne.ws.WeatherSynchronizer"
+api-version: "1.19"
+prefix: "WeatherSynchronizer"
+author: "kvdpxne"
+description: "Allows you to synchronize real weather with the weather in the game."
+website: "https://github.com/kvdpxne/weather-synchronizer"
