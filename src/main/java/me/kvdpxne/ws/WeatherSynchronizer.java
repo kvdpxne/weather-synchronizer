@@ -11,4 +11,9 @@ public final class WeatherSynchronizer
     final OpenWeatherCaller caller = new OpenWeatherCaller();
     Bukkit.getScheduler().runTaskTimerAsynchronously(this, new AsynchronousWeatherChanger(caller), 100L, 18_000L);
   }
+
+  @Override
+  public void onDisable() {
+    Bukkit.getScheduler().cancelTasks(this);
+  }
 }
