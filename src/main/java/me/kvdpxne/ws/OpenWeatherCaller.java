@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Function;
 
 final class OpenWeatherCaller {
 
@@ -38,69 +39,68 @@ final class OpenWeatherCaller {
     super();
   }
 
-  public Coordinates requestGeographyCoordinates() throws IOException {
-    final URL target = new URL(
-      GEOGRAPHY_API
-        + "?q=" + "Lublin" + ',' + "PL"
-        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054"
-    );
+  public <T> T openConnection(
+    final String target,
+    final Function<Reader, T> readerFunction
+  ) {
+    try {
+      final URL targetUrl = new URL(target);
 
-    final HttpURLConnection connection = (HttpURLConnection) target.openConnection();
-    connection.setRequestMethod("GET");
+      final HttpURLConnection connection =
+        (HttpURLConnection) targetUrl.openConnection();
 
-    final int responseCode = connection.getResponseCode();
-    if (200 != responseCode) {
-      throw new OpenWeatherCallException("Response code:" + responseCode);
+      connection.setRequestMethod("GET");
+      connection.setRequestProperty("Content-Type", "application/json");
+
+      final int responseCode = connection.getResponseCode();
+      if (HttpURLConnection.HTTP_OK != responseCode) {
+        throw new OpenWeatherCallException("Response code:" + responseCode);
+      }
+
+      final Reader reader = new InputStreamReader(
+        connection.getInputStream(),
+        StandardCharsets.UTF_8
+      );
+
+      final T result = readerFunction.apply(reader);
+
+      reader.close();
+      connection.disconnect();
+
+      return result;
+    } catch (IOException exception) {
+      throw new OpenWeatherCallException("");
     }
-
-    final Reader reader = new InputStreamReader(
-      connection.getInputStream(),
-      StandardCharsets.UTF_8
-    );
-
-    final Coordinates coordinates = GSON.fromJson(
-      GSON.newJsonReader(reader),
-      COORDINATES_TOKEN
-    );
-
-    reader.close();
-    connection.disconnect();
-
-    this.latitude = coordinates.getLatitude();
-    this.longitude = coordinates.getLongitude();
-
-    return coordinates;
   }
 
-  public Weather requestWeather() throws IOException {
-    final URL target = new URL(
+  public Coordinates requestGeographyCoordinates() {
+    return this.openConnection(GEOGRAPHY_API
+        + "?q=" + "Lublin" + ',' + "PL"
+        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054",
+      reader -> {
+        final Coordinates coordinates = GSON.fromJson(
+          GSON.newJsonReader(reader),
+          COORDINATES_TOKEN
+        );
+
+        this.latitude = coordinates.getLatitude();
+        this.longitude = coordinates.getLongitude();
+
+        return coordinates;
+      }
+    );
+  }
+
+  public Weather requestWeather() {
+    return this.openConnection(
       WEATHER_API
         + "?lat=" + this.latitude
         + "&lon=" + this.longitude
-        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054"
+        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054",
+      reader -> GSON.fromJson(
+        GSON.newJsonReader(reader),
+        WEATHER_TOKEN
+      )
     );
-
-    final HttpURLConnection connection = (HttpURLConnection) target.openConnection();
-    connection.setRequestMethod("GET");
-
-    final int responseCode = connection.getResponseCode();
-    if (200 != responseCode) {
-      throw new OpenWeatherCallException("Response code:" + responseCode);
-    }
-
-    final Reader reader = new InputStreamReader(
-      connection.getInputStream(),
-      StandardCharsets.UTF_8
-    );
-
-    final Weather weather = GSON.fromJson(
-      GSON.newJsonReader(reader),
-      WEATHER_TOKEN
-    );
-
-    reader.close();
-    connection.disconnect();
-
-    return weather;
   }
 }
