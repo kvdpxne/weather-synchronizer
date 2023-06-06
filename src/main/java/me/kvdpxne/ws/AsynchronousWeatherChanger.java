@@ -2,8 +2,7 @@ package me.kvdpxne.ws;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-
-import java.io.IOException;
+import org.bukkit.World.Environment;
 
 public final class AsynchronousWeatherChanger
   implements Runnable {
@@ -25,19 +24,22 @@ public final class AsynchronousWeatherChanger
 
   @Override
   public void run() {
-    Weather currentWeather;
+    final Weather currentWeather;
 
-    try {
-      synchronized (this.caller) {
-        this.caller.requestGeographyCoordinates();
-        currentWeather = this.caller.requestWeather();
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    synchronized (this.caller) {
+      this.caller.requestGeographyCoordinates();
+      currentWeather = this.caller.requestWeather();
+    }
+
+    if (null == currentWeather) {
+      return;
     }
 
     for (final World world : Bukkit.getWorlds()) {
-      if (!world.getEnvironment().equals(World.Environment.NORMAL)) {
+      // Changing the weather in a world with a non-normal environment will
+      // not have any visual effects, therefore it is best to skip all worlds
+      // with other environments such as the nether.
+      if (!world.getEnvironment().equals(Environment.NORMAL)) {
         continue;
       }
 
