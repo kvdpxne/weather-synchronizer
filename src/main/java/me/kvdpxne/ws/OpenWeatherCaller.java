@@ -39,6 +39,10 @@ final class OpenWeatherCaller {
     super();
   }
 
+  private String getOpenWeatherKey() {
+    return System.getenv("OPEN_WEATHER_KEY");
+  }
+
   public <T> T openConnection(
     final String target,
     final Function<Reader, T> readerFunction
@@ -76,7 +80,7 @@ final class OpenWeatherCaller {
   public Coordinates requestGeographyCoordinates() {
     return this.openConnection(GEOGRAPHY_API
         + "?q=" + "Lublin" + ',' + "PL"
-        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054",
+        + "&appid=" + this.getOpenWeatherKey(),
       reader -> {
         final Coordinates coordinates = GSON.fromJson(
           GSON.newJsonReader(reader),
@@ -96,7 +100,7 @@ final class OpenWeatherCaller {
       WEATHER_API
         + "?lat=" + this.latitude
         + "&lon=" + this.longitude
-        + "&appid=" + "64d67f5919f7491f642edd5e6fbf1054",
+        + "&appid=" + this.getOpenWeatherKey(),
       reader -> GSON.fromJson(
         GSON.newJsonReader(reader),
         WEATHER_TOKEN
