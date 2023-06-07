@@ -24,14 +24,14 @@ public final class AsynchronousWeatherChanger
 
   @Override
   public void run() {
-    final Weather currentWeather;
+    final Weather weather;
 
     synchronized (this.caller) {
       this.caller.requestGeographyCoordinates();
-      currentWeather = this.caller.requestWeather();
+      weather = this.caller.requestWeather();
     }
 
-    if (null == currentWeather) {
+    if (null == weather) {
       return;
     }
 
@@ -43,19 +43,8 @@ public final class AsynchronousWeatherChanger
         continue;
       }
 
-      if (currentWeather.isClear()) {
-        this.changeWeather(world, false, false);
-        return;
-      }
-
-      if (currentWeather.isRain()) {
-        this.changeWeather(world, false, true);
-        return;
-      }
-
-      if (currentWeather.isThunderstorm()) {
-        this.changeWeather(world, true, true);
-      }
+      final boolean thunderstorm = weather.isThunderstorm();
+      this.changeWeather(world, thunderstorm, thunderstorm || weather.isRain());
     }
   }
 }

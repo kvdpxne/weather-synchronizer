@@ -31,12 +31,14 @@ final class OpenWeatherCaller {
   private static final TypeToken<Weather> WEATHER_TOKEN =
     TypeToken.get(Weather.class);
 
+  private final Settings settings;
+
   private float latitude;
 
   private float longitude;
 
-  OpenWeatherCaller() {
-    super();
+  OpenWeatherCaller(final Settings settings) {
+    this.settings = settings;
   }
 
   private String getOpenWeatherKey() {
@@ -79,7 +81,7 @@ final class OpenWeatherCaller {
 
   public Coordinates requestGeographyCoordinates() {
     return this.openConnection(GEOGRAPHY_API
-        + "?q=" + "Lublin" + ',' + "PL"
+        + "?q=" + this.settings.getLocation()
         + "&appid=" + this.getOpenWeatherKey(),
       reader -> {
         final Coordinates coordinates = GSON.fromJson(
