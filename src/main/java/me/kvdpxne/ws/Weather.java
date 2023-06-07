@@ -13,11 +13,6 @@ public final class Weather {
   }
 
   public boolean isRain() {
-    return 300 <= this.identifier && 400 > this.identifier
-      || 500 <= this.identifier && 600 > this.identifier;
-  }
-
-  public boolean isClear() {
-    return 800 <= this.identifier && 900 > this.identifier;
+    return 300 <= this.identifier && 700 > this.identifier;
   }
 }
