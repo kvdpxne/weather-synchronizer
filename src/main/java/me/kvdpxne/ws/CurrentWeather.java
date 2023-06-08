@@ -1,10 +1,10 @@
 package me.kvdpxne.ws;
 
-public final class Weather {
+public final class CurrentWeather {
 
   private final int identifier;
 
-  Weather(final int identifier) {
+  CurrentWeather(final int identifier) {
     this.identifier = identifier;
   }
 

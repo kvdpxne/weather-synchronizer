@@ -9,14 +9,14 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 final class WeatherDeserializer
-  implements JsonDeserializer<Weather> {
+  implements JsonDeserializer<CurrentWeather> {
 
   WeatherDeserializer() {
     super();
   }
 
   @Override
-  public Weather deserialize(
+  public CurrentWeather deserialize(
     final JsonElement json,
     final Type typeOfT,
     final JsonDeserializationContext context
@@ -25,7 +25,7 @@ final class WeatherDeserializer
       .getAsJsonArray("weather")
       .get(0)
       .getAsJsonObject();
-    return new Weather(
+    return new CurrentWeather(
       node.getAsJsonPrimitive("id")
         .getAsInt()
     );

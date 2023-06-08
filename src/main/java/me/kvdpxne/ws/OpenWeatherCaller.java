@@ -22,14 +22,14 @@ final class OpenWeatherCaller {
 
   private static final Gson GSON = new GsonBuilder()
     .registerTypeAdapter(Coordinates.class, new CoordinatesDeserializer())
-    .registerTypeAdapter(Weather.class, new WeatherDeserializer())
+    .registerTypeAdapter(CurrentWeather.class, new WeatherDeserializer())
     .create();
 
   private static final TypeToken<Coordinates> COORDINATES_TOKEN =
     TypeToken.get(Coordinates.class);
 
-  private static final TypeToken<Weather> WEATHER_TOKEN =
-    TypeToken.get(Weather.class);
+  private static final TypeToken<CurrentWeather> WEATHER_TOKEN =
+    TypeToken.get(CurrentWeather.class);
 
   private final Settings settings;
 
@@ -97,7 +97,7 @@ final class OpenWeatherCaller {
     );
   }
 
-  public Weather requestWeather() {
+  public CurrentWeather requestWeather() {
     return this.openConnection(
       WEATHER_API
         + "?lat=" + this.latitude
