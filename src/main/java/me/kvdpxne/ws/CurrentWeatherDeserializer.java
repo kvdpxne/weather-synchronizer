@@ -8,10 +8,10 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-final class WeatherDeserializer
+final class CurrentWeatherDeserializer
   implements JsonDeserializer<CurrentWeather> {
 
-  WeatherDeserializer() {
+  CurrentWeatherDeserializer() {
     super();
   }
 

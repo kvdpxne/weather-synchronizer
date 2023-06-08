@@ -22,7 +22,7 @@ final class OpenWeatherCaller {
 
   private static final Gson GSON = new GsonBuilder()
     .registerTypeAdapter(Coordinates.class, new CoordinatesDeserializer())
-    .registerTypeAdapter(CurrentWeather.class, new WeatherDeserializer())
+    .registerTypeAdapter(CurrentWeather.class, new CurrentWeatherDeserializer())
     .create();
 
   private static final TypeToken<Coordinates> COORDINATES_TOKEN =
