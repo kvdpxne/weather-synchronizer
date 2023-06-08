@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 
-public final class AsynchronousWeatherChanger
+final class AsynchronousWeatherChanger
   implements Runnable {
 
   private final OpenWeatherCaller caller;

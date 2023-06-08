@@ -4,7 +4,7 @@ public final class Weather {
 
   private final int identifier;
 
-  public Weather(final int identifier) {
+  Weather(final int identifier) {
     this.identifier = identifier;
   }
 

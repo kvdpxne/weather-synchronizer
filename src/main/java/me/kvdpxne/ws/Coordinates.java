@@ -1,6 +1,6 @@
 package me.kvdpxne.ws;
 
-final class Coordinates {
+public final class Coordinates {
 
   private final float latitude;
   private final float longitude;
