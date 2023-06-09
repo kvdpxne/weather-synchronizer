@@ -1,7 +1,7 @@
 [versions]
 gson = "2.10.1"
 jupiter = "5.9.3"
-spigot = "1.19.4-R0.1-SNAPSHOT"
+spigot = "1.20-R0.1-SNAPSHOT"
 
 [libraries]
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
