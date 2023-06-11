@@ -15,3 +15,7 @@
 # The build directory of this project into which Gradle generates all
 # build artifacts, tests results etc.
 build/
+
+# Miscellaneous
+# Common working directory.
+run/
