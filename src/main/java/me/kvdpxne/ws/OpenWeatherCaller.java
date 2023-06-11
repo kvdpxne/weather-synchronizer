@@ -1,12 +1,11 @@
 package me.kvdpxne.ws;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -20,22 +19,17 @@ final class OpenWeatherCaller {
   private static final String WEATHER_API =
     "https://api.openweathermap.org/data/2.5/weather";
 
-  private static final Gson GSON = new GsonBuilder()
-    .registerTypeAdapter(Coordinates.class, new CoordinatesDeserializer())
-    .registerTypeAdapter(CurrentWeather.class, new CurrentWeatherDeserializer())
-    .create();
+  private static final Type COORDINATES_TYPE =
+    TypeToken.get(Coordinates.class).getType();
 
-  private static final TypeToken<Coordinates> COORDINATES_TOKEN =
-    TypeToken.get(Coordinates.class);
-
-  private static final TypeToken<CurrentWeather> WEATHER_TOKEN =
-    TypeToken.get(CurrentWeather.class);
+  private static final Type WEATHER_TYPE =
+    TypeToken.get(CurrentWeather.class).getType();
 
   private final Settings settings;
 
-  private float latitude;
+  private double latitude;
 
-  private float longitude;
+  private double longitude;
 
   OpenWeatherCaller(final Settings settings) {
     this.settings = settings;
@@ -84,9 +78,8 @@ final class OpenWeatherCaller {
         + "?q=" + this.settings.getLocation()
         + "&appid=" + this.getOpenWeatherKey(),
       reader -> {
-        final Coordinates coordinates = GSON.fromJson(
-          GSON.newJsonReader(reader),
-          COORDINATES_TOKEN
+        final Coordinates coordinates = JsonDependencyInstance.GSON.fromJson(
+          reader, COORDINATES_TYPE
         );
 
         this.latitude = coordinates.getLatitude();
@@ -103,9 +96,9 @@ final class OpenWeatherCaller {
         + "?lat=" + this.latitude
         + "&lon=" + this.longitude
         + "&appid=" + this.getOpenWeatherKey(),
-      reader -> GSON.fromJson(
-        GSON.newJsonReader(reader),
-        WEATHER_TOKEN
+      reader -> JsonDependencyInstance.GSON.fromJson(
+        reader,
+        WEATHER_TYPE
       )
     );
   }
