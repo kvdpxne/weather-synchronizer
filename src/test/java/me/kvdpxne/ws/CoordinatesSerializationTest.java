@@ -15,7 +15,7 @@ final class CoordinatesSerializationTest {
   @DisplayName("Serialize to Stored File")
   void serializeToStoredFile() throws IOException {
     final Path path = Paths.get("./run");
-    final CoordinatesStorage storage = new CoordinatesStorage(path);
+    final WorldWithCoordinatesStorage storage = new WorldWithCoordinatesStorage(path);
 
     if (Files.notExists(path)) {
       Files.createDirectory(path);

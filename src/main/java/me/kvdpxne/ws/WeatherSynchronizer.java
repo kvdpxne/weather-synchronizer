@@ -8,7 +8,7 @@ import java.io.File;
 public final class WeatherSynchronizer
   extends JavaPlugin {
 
-  private final CoordinatesStorage dataManager;
+  private final WorldWithCoordinatesStorage dataManager;
   private final Settings settings;
 
   private final OpenWeatherCaller caller;
@@ -20,7 +20,7 @@ public final class WeatherSynchronizer
       rootDirectory.mkdir();
     }
 
-    this.dataManager = new CoordinatesStorage(rootDirectory.toPath());
+    this.dataManager = new WorldWithCoordinatesStorage(rootDirectory.toPath());
     this.settings = new Settings();
 
     this.caller = new OpenWeatherCaller(this.settings);

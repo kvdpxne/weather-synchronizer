@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class CoordinatesStorage {
+public final class WorldWithCoordinatesStorage {
 
   private static final Type COORDINATES_COLLECTION_TYPE;
 
@@ -26,7 +26,7 @@ public final class CoordinatesStorage {
   private final Set<Coordinates> coordinates;
   private final Path rootDirectoryPath;
 
-  CoordinatesStorage(final Path path) {
+  WorldWithCoordinatesStorage(final Path path) {
     this.rootDirectoryPath = path;
     this.coordinates = new HashSet<>(8);
   }
