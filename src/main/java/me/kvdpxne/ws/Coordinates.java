@@ -1,8 +1,16 @@
 package me.kvdpxne.ws;
 
-public final class Coordinates {
+import com.google.gson.annotations.SerializedName;
 
+public class Coordinates {
+
+  public static final String FIELD_LATITUDE = "lat";
+  public static final String FIELD_LONGITUDE = "lon";
+
+  @SerializedName(FIELD_LATITUDE)
   private final double latitude;
+
+  @SerializedName(FIELD_LONGITUDE)
   private final double longitude;
 
   Coordinates(

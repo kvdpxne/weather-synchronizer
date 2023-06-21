@@ -5,10 +5,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
+@SuppressWarnings("unused")
 public final class WeatherSynchronizer
   extends JavaPlugin {
 
-  private final WorldWithCoordinatesStorage dataManager;
+  private final WorldWeatherStorage storage;
   private final Settings settings;
 
   private final OpenWeatherCaller caller;
@@ -20,7 +21,7 @@ public final class WeatherSynchronizer
       rootDirectory.mkdir();
     }
 
-    this.dataManager = new WorldWithCoordinatesStorage(rootDirectory.toPath());
+    this.storage = new WorldWeatherStorage(rootDirectory.toPath());
     this.settings = new Settings();
 
     this.caller = new OpenWeatherCaller(this.settings);
@@ -30,7 +31,7 @@ public final class WeatherSynchronizer
   public void onLoad() {
     this.settings.export();
 
-    this.dataManager.loadAll();
+    this.storage.loadAll();
     this.settings.load();
   }
 
@@ -38,7 +39,7 @@ public final class WeatherSynchronizer
   public void onEnable() {
     Bukkit.getScheduler().runTaskTimerAsynchronously(
       this,
-      new AsynchronousWeatherChanger(this.caller),
+      new WeatherChanger(this.storage),
       100L,
       18_000L
     );
@@ -47,6 +48,6 @@ public final class WeatherSynchronizer
   @Override
   public void onDisable() {
     Bukkit.getScheduler().cancelTasks(this);
-    this.dataManager.saveAll();
+    this.storage.saveAll();
   }
 }

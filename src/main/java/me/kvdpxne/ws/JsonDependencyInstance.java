@@ -9,7 +9,7 @@ final class JsonDependencyInstance {
   static final Gson GSON = new GsonBuilder()
     .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
     .registerTypeAdapter(Coordinates.class, new CoordinatesDeserializer())
-    .registerTypeAdapter(Coordinates.class, new CoordinatesSerializer())
+    .registerTypeAdapter(WorldWeather.class, new WorldWeatherSerializer())
     .registerTypeAdapter(CurrentWeather.class, new CurrentWeatherDeserializer())
     .create();
 }

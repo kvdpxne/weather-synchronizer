@@ -25,14 +25,8 @@ final class OpenWeatherCaller {
   private static final Type WEATHER_TYPE =
     TypeToken.get(CurrentWeather.class).getType();
 
-  private final Settings settings;
-
-  private double latitude;
-
-  private double longitude;
-
   OpenWeatherCaller(final Settings settings) {
-    this.settings = settings;
+
   }
 
   private String getOpenWeatherKey() {
@@ -73,28 +67,41 @@ final class OpenWeatherCaller {
     }
   }
 
-  public Coordinates requestGeographyCoordinates() {
-    return this.openConnection(GEOGRAPHY_API
-        + "?q=" + this.settings.getLocation()
-        + "&appid=" + this.getOpenWeatherKey(),
-      reader -> {
-        final Coordinates coordinates = JsonDependencyInstance.GSON.fromJson(
-          reader, COORDINATES_TYPE
-        );
+//  public Coordinates requestGeographyCoordinates() {
+//    return this.openConnection(GEOGRAPHY_API
+//        + "?q=" + this.settings.getLocation()
+//        + "&appid=" + this.getOpenWeatherKey(),
+//      reader -> {
+//        final Coordinates coordinates = JsonDependencyInstance.GSON.fromJson(
+//          reader, COORDINATES_TYPE
+//        );
+//
+//        this.latitude = coordinates.getLatitude();
+//        this.longitude = coordinates.getLongitude();
+//
+//        return coordinates;
+//      }
+//    );
+//  }
 
-        this.latitude = coordinates.getLatitude();
-        this.longitude = coordinates.getLongitude();
+//  public CurrentWeather requestWeather() {
+//    return this.openConnection(
+//      WEATHER_API
+//        + "?lat=" + this.latitude
+//        + "&lon=" + this.longitude
+//        + "&appid=" + this.getOpenWeatherKey(),
+//      reader -> JsonDependencyInstance.GSON.fromJson(
+//        reader,
+//        WEATHER_TYPE
+//      )
+//    );
+//  }
 
-        return coordinates;
-      }
-    );
-  }
-
-  public CurrentWeather requestWeather() {
+  public CurrentWeather getCurrentWeatherByCoordinates(final Coordinates coordinates) {
     return this.openConnection(
       WEATHER_API
-        + "?lat=" + this.latitude
-        + "&lon=" + this.longitude
+        + "?lat=" + coordinates.getLatitude()
+        + "&lon=" + coordinates.getLongitude()
         + "&appid=" + this.getOpenWeatherKey(),
       reader -> JsonDependencyInstance.GSON.fromJson(
         reader,

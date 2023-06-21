@@ -21,23 +21,19 @@ final class CoordinatesDeserializer
     final Type typeOfT,
     final JsonDeserializationContext context
   ) throws JsonParseException {
-    final JsonObject node = json.isJsonArray()
-      ? json.getAsJsonArray().get(0).getAsJsonObject()
-      : json.isJsonObject()
-      ? json.getAsJsonObject()
-      : null;
-
-    if (null == node) {
-      // TODO add exception detail message
-      throw new UnsupportedOperationException();
+    if (!json.isJsonArray()) {
+      throw new UnsupportedOperationException("Deserialization of coordinates"
+        + "from an element other than an array is not supported."
+      );
     }
 
-    final double lat = node.getAsJsonPrimitive("lat").getAsDouble();
-    final double lon = node.getAsJsonPrimitive("lon").getAsDouble();
+    final JsonObject node = json.getAsJsonArray()
+      .get(0)
+      .getAsJsonObject();
 
     return new Coordinates(
-      lat,
-      lon
+      node.getAsJsonPrimitive(Coordinates.FIELD_LATITUDE).getAsDouble(),
+      node.getAsJsonPrimitive(Coordinates.FIELD_LONGITUDE).getAsDouble()
     );
   }
 }
