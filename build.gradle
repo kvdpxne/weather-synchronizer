@@ -8,6 +8,7 @@ version = "0.1.0"
 
 dependencies {
   compileOnly(libraries.spigot)
+  compileOnly(libraries.annotations)
 
   testImplementation(libraries.gson)
   testImplementation(libraries.jupiter)
