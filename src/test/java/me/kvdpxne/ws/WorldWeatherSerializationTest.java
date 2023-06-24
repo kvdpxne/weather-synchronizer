@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-final class WorldWithCoordinatesSerializationTest {
+final class WorldWeatherSerializationTest {
 
   final double[] coordinates = {
     51.1089776D, 17.0326689D,
