@@ -1,7 +1,7 @@
 package me.kvdpxne.ws;
 
 public final class OpenWeatherCallException
-  extends RuntimeException {
+  extends OpenWeatherException {
 
   OpenWeatherCallException(final String message) {
     super(message);

@@ -12,4 +12,8 @@ final class JsonDependencyInstance {
     .registerTypeAdapter(WorldWeather.class, new WorldWeatherSerializer())
     .registerTypeAdapter(CurrentWeather.class, new CurrentWeatherDeserializer())
     .create();
+
+  public static Gson getGson() {
+    return GSON;
+  }
 }

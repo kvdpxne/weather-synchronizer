@@ -11,7 +11,6 @@ public final class WorldWeather
   private final UUID identifier;
   private CurrentWeather currentWeather;
 
-
   WorldWeather(
     final UUID identifier,
     final double latitude,
@@ -33,15 +32,8 @@ public final class WorldWeather
     return this.currentWeather;
   }
 
-  public CurrentWeather updateCurrentWeather(final CurrentWeather newWeather) {
-    if (this.currentWeather.equals(newWeather) || !newWeather.wasChanged()) {
-      throw new IllegalArgumentException("");
-    }
-
-    this.currentWeather.changed = false;
+  public void updateCurrentWeather(final CurrentWeather newWeather) {
     this.currentWeather = newWeather;
-
-    return this.currentWeather;
   }
 
   @Override
@@ -74,7 +66,8 @@ public final class WorldWeather
     return "WorldWithCoordinates{"
       + "identifier=" + this.identifier
       + ", latitude=" + this.getLatitude()
-      + ", longitude=" + this.getLatitude()
+      + ", longitude=" + this.getLongitude()
+      + ", weather=" + this.currentWeather.toString()
       + '}';
   }
 }

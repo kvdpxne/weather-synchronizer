@@ -34,11 +34,9 @@ final class WeatherChanger
       final boolean stormy = weather.isStormy();
       final boolean rainy = weather.isRainy();
 
-      synchronized (this) {
-        world.setStorm(rainy || stormy);
-        world.setThundering(stormy);
-        world.setWeatherDuration(Integer.MAX_VALUE);
-      }
+      world.setStorm(rainy || stormy);
+      world.setThundering(stormy);
+      world.setWeatherDuration(Integer.MAX_VALUE);
     }
   }
 }

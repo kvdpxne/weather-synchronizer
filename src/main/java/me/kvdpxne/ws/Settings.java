@@ -6,27 +6,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class Settings {
 
-  private String location;
-
+  private final Path rootDirectoryPath;
   private boolean hasExported;
 
-  Settings() {
-    this.location = "Warsaw,PL";
+  private Map<String, String> locationByWorld;
+
+  Settings(final Path path) {
+    this.rootDirectoryPath = path;
     this.hasExported = false;
+
+    this.locationByWorld = new HashMap<>(4);
   }
 
   private Path getPath() {
-    return Paths.get("./weather-synchronizer/settings.yml");
+    return this.rootDirectoryPath.resolve("settings.yml");
   }
 
   private void deserialize(final Map<String, ?> data) {
-    this.location = (String) data.get("location");
+    this.locationByWorld = (Map<String, String>) data.get("location");
   }
 
   /**
@@ -40,14 +43,11 @@ public final class Settings {
       return;
     }
 
-    final Path parent = Paths.get("./weather-synchronizer");
-
     try (final InputStream input = this.getClass().getResourceAsStream("/settings.yml")) {
       if (null == input) {
         throw new RuntimeException("");
       }
 
-      Files.createDirectory(parent);
       Files.copy(input, destination, StandardCopyOption.REPLACE_EXISTING);
 
       this.hasExported = true;
@@ -73,7 +73,7 @@ public final class Settings {
     }
   }
 
-  public String getLocation() {
-    return this.location;
+  public Map<String, String> getLocationByWorld() {
+    return this.locationByWorld;
   }
 }
