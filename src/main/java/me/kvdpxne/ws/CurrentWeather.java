@@ -7,8 +7,6 @@ public final class CurrentWeather {
    */
   private final int identifier;
 
-  boolean changed;
-
   /**
    * Creates a new instance of the current weather condition given a unique
    * identifier that specifies the current weather.
@@ -36,10 +34,6 @@ public final class CurrentWeather {
    */
   public boolean isRainy() {
     return 300 <= this.identifier && 700 > this.identifier;
-  }
-
-  public boolean wasChanged() {
-    return this.changed;
   }
 
   @Override
