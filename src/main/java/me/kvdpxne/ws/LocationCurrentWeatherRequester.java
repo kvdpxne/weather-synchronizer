@@ -1,5 +1,8 @@
 package me.kvdpxne.ws;
 
+import me.kvdpxne.cricket.Cricket;
+import me.kvdpxne.cricket.CricketFactory;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -10,6 +13,12 @@ import java.nio.charset.StandardCharsets;
 public final class LocationCurrentWeatherRequester
   implements Requester<CurrentWeather> {
 
+  private static final Cricket logger;
+
+  static {
+    logger = CricketFactory.of(GeographicalCoordinatesRequester.class);
+  }
+
   private final Coordinates coordinates;
   private CurrentWeather currentWeather;
 
@@ -19,6 +28,8 @@ public final class LocationCurrentWeatherRequester
 
   @Override
   public void run() {
+    logger.debug("Preparing to send a request with a parameter: {}", this.coordinates);
+
     final String url1 = "https://api.openweathermap.org/data/2.5/weather"
       + "?lat=" + this.coordinates.getLatitude()
       + "&lon=" + this.coordinates.getLongitude()

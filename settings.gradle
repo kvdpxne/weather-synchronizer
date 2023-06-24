@@ -22,6 +22,11 @@ dependencyResolutionManagement {
     mavenLocal()
 
     maven {
+      name = "jitpack"
+      url = "https://jitpack.io/"
+    }
+
+    maven {
       name = "spigot-repository"
       url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
